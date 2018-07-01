@@ -5,6 +5,7 @@
 - [Getting Started](#getting-started)
 - [Editor](#editor)
 - [Development](#development)
+- [Debugging](#debugging)
 - [Testing](#testing)
 - [Overview of Commands](#overview-of-commands)
 
@@ -12,6 +13,7 @@
 
 1.  Install [Docker](https://www.docker.com/).
 2.  Install the [Prisma](https://www.prisma.io/) CLI by typing `npm install -g prisma`. Prisma a GraphQL backend service that acts like an ORM (Object Relational Mapping) between GraphQL schemas and the actual data stored in the database.
+3.  Install the `graphql-cli` globally by typing `npm install -g graphql-cli`.
 
 ## Editor
 
@@ -69,6 +71,12 @@ Prisma serves as another database layer on top of our DB that allows us to use o
 Once you have Docker set up and running, navigate to the directory with the `prisma.yml` file and type `prisma deploy`, which starts your Prisma server.
 You can open up the playground by typing `prisma playground` in the same directory. Click on the "Schema" tab to the right to see all of the self-generated functionality that Prisma creates just by reading our `.graphql` files!
 
+## Debugging
+
+Instead of starting your server with `yarn start`, start it with `yarn debug`, which starts the process with the `--inspect` flag. You can set a breakpoint at any point in the code by clicking to the left of the line numbers. Then, hit the debug icon on the very left side of VSCode press the green arrow. Pick the process that says `node --inspect src/app.js`.
+
+This debugger supports live reload! If you make a change, it should automatically attach to the new process.
+
 ## Testing
 
 Our testing framework will [Jest](https://facebook.github.io/jest/docs/en/tutorial-react-native.html), which is a great testing framework published and maintained by Facebook. Front end tests serve to make sure that changes to one part of the app don't affect others. Tests should only be written if they are meaningful, AKA don't test to make sure that a Button appears when you've very clearly programmed a button there. You should be testing for things such as how a component interacts given a different set of props, or how an entire screen reacts to a button press.
@@ -81,7 +89,15 @@ You can run the test suite by typing `yarn test`. Ignore all of the `console.err
 
 These commands can also be found the `package.json` file under `‘scripts’`
 
-- `yarn run lint`
+- `yarn lint`
   - Runs the linter and fixes any formatting issues
+- `yarn start`
+  - Runs the development server with live-reloading
+- `yarn debug`
+  - Runs the development server in debug mode
+- `yarn prisma-deploy`
+  - Deploys the Prisma server
+- `yarn prisma-playground`
+  - Launches the Prisma playground
 - `yarn test`
   - Runs the Testing Suite in Jest

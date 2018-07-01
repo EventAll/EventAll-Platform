@@ -1,13 +1,12 @@
 const { GraphQLServer } = require('graphql-yoga');
 const { Prisma } = require('prisma-binding');
-
-const resolvers = require('./graphql/resolvers');
+const logger = require('./helpers/logger');
 
 const ENV = process.env.NODE_ENV || 'development';
 
 const server = new GraphQLServer({
   typeDefs: 'src/graphql/schema.graphql',
-  resolvers,
+  resolvers: require('./graphql/resolvers'),
   context: (req) => ({
     ...req,
     prisma: new Prisma({
@@ -20,8 +19,10 @@ const server = new GraphQLServer({
 const options = {
   port: 4000,
   // Only enable graphql playground in development mode
-  playground: ENV === 'development' ? '/' : false,
+  playground: ENV === 'development' ? '/playground' : false,
 };
 
+server.express.use(require('./routes/healthcheck'));
+
 server.start(options, ({ port }) =>
-  console.log(`GraphQL server is running on http://localhost:${port}`));
+  logger.verbose(`GraphQL server is running on http://localhost:${port}`));

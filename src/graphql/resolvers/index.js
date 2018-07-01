@@ -1,4 +1,5 @@
 const { readdirSync } = require('fs');
+const logger = require('../../helpers/logger');
 
 const resolvers = {
   Query: {},
@@ -7,6 +8,7 @@ const resolvers = {
 
 readdirSync(`${__dirname}/`).forEach((file) => {
   if (file.match(/\.js$/) !== null && file !== 'index.js') {
+    logger.verbose(`Processing resolver: ${file}`);
     const resolver = require('./' + file);
     const { Query, Mutation } = resolver;
     // Read all of the Query objects into the dictionary
