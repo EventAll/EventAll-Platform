@@ -1,0 +1,31 @@
+{
+  "name": "eventall-platform",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "NODE_ENV=development nodemon src/app.js",
+    "lint": "eslint src/app.js --fix",
+    "prisma-deploy": "prisma deploy",
+    "prisma-playground": "prisma playground"
+  },
+  "dependencies": {
+    "body-parser": "~1.18.2",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "graphql": "^0.13.2",
+    "graphql-yoga": "^1.14.10",
+    "morgan": "~1.9.0",
+    "prisma-binding": "^2.1.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.2.5",
+    "eslint": "^5.0.1",
+    "eslint-config-airbnb": "^17.0.0",
+    "eslint-config-airbnb-base": "^13.0.0",
+    "eslint-plugin-import": "^2.13.0",
+    "nodemon": "^1.17.5"
+  },
+  "main": "index.js",
+  "author": "peniqliotuv <jerrytsu@usc.edu>",
+  "license": "MIT"
+}

@@ -1,0 +1,11 @@
+# import Post from './generated/prisma.graphql'
+# import Event from './generated/prisma.graphql'
+
+type Query {
+  events(searchString: String): [Event!]!
+  user(id: ID!): User
+}
+
+type Mutation {
+  signUp(name: String!): User!
+}

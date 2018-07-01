@@ -1,0 +1,13 @@
+type User {
+  id: ID! @unique
+  name: String!
+  email: String
+  events: [Event!]!
+}
+
+type Event {
+  id: ID! @unique
+  name: String!
+  location: String!
+  description: String!
+}
