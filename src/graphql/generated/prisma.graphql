@@ -1,5 +1,5 @@
 # source: http://localhost:4466
-# timestamp: Sat Jun 30 2018 22:31:44 GMT-0700 (Pacific Daylight Time)
+# timestamp: Tue Jul 03 2018 08:30:17 GMT-0700 (Pacific Daylight Time)
 
 type AggregateEvent {
   count: Int!
@@ -14,11 +14,20 @@ type BatchPayload {
   count: Long!
 }
 
+scalar DateTime
+
 type Event implements Node {
   id: ID!
+  attendees(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
   name: String!
   location: String!
   description: String!
+  startDateUtc: DateTime!
+  endDateUtc: DateTime!
+  isAllDay: Boolean!
+  isRecurring: Boolean!
+  duration: Int!
+  recurrencePattern: String
 }
 
 """A connection to a list of items."""
@@ -34,12 +43,31 @@ type EventConnection {
 input EventCreateInput {
   name: String!
   location: String!
-  description: String!
+  description: String
+  startDateUtc: DateTime!
+  endDateUtc: DateTime!
+  isAllDay: Boolean!
+  isRecurring: Boolean!
+  duration: Int!
+  recurrencePattern: String
+  attendees: UserCreateManyWithoutEventsInput
 }
 
-input EventCreateManyInput {
-  create: [EventCreateInput!]
+input EventCreateManyWithoutAttendeesInput {
+  create: [EventCreateWithoutAttendeesInput!]
   connect: [EventWhereUniqueInput!]
+}
+
+input EventCreateWithoutAttendeesInput {
+  name: String!
+  location: String!
+  description: String
+  startDateUtc: DateTime!
+  endDateUtc: DateTime!
+  isAllDay: Boolean!
+  isRecurring: Boolean!
+  duration: Int!
+  recurrencePattern: String
 }
 
 """An edge in a connection."""
@@ -60,6 +88,18 @@ enum EventOrderByInput {
   location_DESC
   description_ASC
   description_DESC
+  startDateUtc_ASC
+  startDateUtc_DESC
+  endDateUtc_ASC
+  endDateUtc_DESC
+  isAllDay_ASC
+  isAllDay_DESC
+  isRecurring_ASC
+  isRecurring_DESC
+  duration_ASC
+  duration_DESC
+  recurrencePattern_ASC
+  recurrencePattern_DESC
   updatedAt_ASC
   updatedAt_DESC
   createdAt_ASC
@@ -71,6 +111,12 @@ type EventPreviousValues {
   name: String!
   location: String!
   description: String!
+  startDateUtc: DateTime!
+  endDateUtc: DateTime!
+  isAllDay: Boolean!
+  isRecurring: Boolean!
+  duration: Int!
+  recurrencePattern: String
 }
 
 type EventSubscriptionPayload {
@@ -112,36 +158,49 @@ input EventSubscriptionWhereInput {
   node: EventWhereInput
 }
 
-input EventUpdateDataInput {
-  name: String
-  location: String
-  description: String
-}
-
 input EventUpdateInput {
   name: String
   location: String
   description: String
+  startDateUtc: DateTime
+  endDateUtc: DateTime
+  isAllDay: Boolean
+  isRecurring: Boolean
+  duration: Int
+  recurrencePattern: String
+  attendees: UserUpdateManyWithoutEventsInput
 }
 
-input EventUpdateManyInput {
-  create: [EventCreateInput!]
+input EventUpdateManyWithoutAttendeesInput {
+  create: [EventCreateWithoutAttendeesInput!]
   connect: [EventWhereUniqueInput!]
   disconnect: [EventWhereUniqueInput!]
   delete: [EventWhereUniqueInput!]
-  update: [EventUpdateWithWhereUniqueNestedInput!]
-  upsert: [EventUpsertWithWhereUniqueNestedInput!]
+  update: [EventUpdateWithWhereUniqueWithoutAttendeesInput!]
+  upsert: [EventUpsertWithWhereUniqueWithoutAttendeesInput!]
 }
 
-input EventUpdateWithWhereUniqueNestedInput {
-  where: EventWhereUniqueInput!
-  data: EventUpdateDataInput!
+input EventUpdateWithoutAttendeesDataInput {
+  name: String
+  location: String
+  description: String
+  startDateUtc: DateTime
+  endDateUtc: DateTime
+  isAllDay: Boolean
+  isRecurring: Boolean
+  duration: Int
+  recurrencePattern: String
 }
 
-input EventUpsertWithWhereUniqueNestedInput {
+input EventUpdateWithWhereUniqueWithoutAttendeesInput {
   where: EventWhereUniqueInput!
-  update: EventUpdateDataInput!
-  create: EventCreateInput!
+  data: EventUpdateWithoutAttendeesDataInput!
+}
+
+input EventUpsertWithWhereUniqueWithoutAttendeesInput {
+  where: EventWhereUniqueInput!
+  update: EventUpdateWithoutAttendeesDataInput!
+  create: EventCreateWithoutAttendeesInput!
 }
 
 input EventWhereInput {
@@ -313,13 +372,134 @@ input EventWhereInput {
 
   """All values not ending with the given string."""
   description_not_ends_with: String
-  _MagicalBackRelation_EventToUser_every: UserWhereInput
-  _MagicalBackRelation_EventToUser_some: UserWhereInput
-  _MagicalBackRelation_EventToUser_none: UserWhereInput
+  startDateUtc: DateTime
+
+  """All values that are not equal to given value."""
+  startDateUtc_not: DateTime
+
+  """All values that are contained in given list."""
+  startDateUtc_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  startDateUtc_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  startDateUtc_lt: DateTime
+
+  """All values less than or equal the given value."""
+  startDateUtc_lte: DateTime
+
+  """All values greater than the given value."""
+  startDateUtc_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  startDateUtc_gte: DateTime
+  endDateUtc: DateTime
+
+  """All values that are not equal to given value."""
+  endDateUtc_not: DateTime
+
+  """All values that are contained in given list."""
+  endDateUtc_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  endDateUtc_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  endDateUtc_lt: DateTime
+
+  """All values less than or equal the given value."""
+  endDateUtc_lte: DateTime
+
+  """All values greater than the given value."""
+  endDateUtc_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  endDateUtc_gte: DateTime
+  isAllDay: Boolean
+
+  """All values that are not equal to given value."""
+  isAllDay_not: Boolean
+  isRecurring: Boolean
+
+  """All values that are not equal to given value."""
+  isRecurring_not: Boolean
+  duration: Int
+
+  """All values that are not equal to given value."""
+  duration_not: Int
+
+  """All values that are contained in given list."""
+  duration_in: [Int!]
+
+  """All values that are not contained in given list."""
+  duration_not_in: [Int!]
+
+  """All values less than the given value."""
+  duration_lt: Int
+
+  """All values less than or equal the given value."""
+  duration_lte: Int
+
+  """All values greater than the given value."""
+  duration_gt: Int
+
+  """All values greater than or equal the given value."""
+  duration_gte: Int
+  recurrencePattern: String
+
+  """All values that are not equal to given value."""
+  recurrencePattern_not: String
+
+  """All values that are contained in given list."""
+  recurrencePattern_in: [String!]
+
+  """All values that are not contained in given list."""
+  recurrencePattern_not_in: [String!]
+
+  """All values less than the given value."""
+  recurrencePattern_lt: String
+
+  """All values less than or equal the given value."""
+  recurrencePattern_lte: String
+
+  """All values greater than the given value."""
+  recurrencePattern_gt: String
+
+  """All values greater than or equal the given value."""
+  recurrencePattern_gte: String
+
+  """All values containing the given string."""
+  recurrencePattern_contains: String
+
+  """All values not containing the given string."""
+  recurrencePattern_not_contains: String
+
+  """All values starting with the given string."""
+  recurrencePattern_starts_with: String
+
+  """All values not starting with the given string."""
+  recurrencePattern_not_starts_with: String
+
+  """All values ending with the given string."""
+  recurrencePattern_ends_with: String
+
+  """All values not ending with the given string."""
+  recurrencePattern_not_ends_with: String
+  attendees_every: UserWhereInput
+  attendees_some: UserWhereInput
+  attendees_none: UserWhereInput
 }
 
 input EventWhereUniqueInput {
   id: ID
+}
+
+enum Gender {
+  FEMALE
+  MALE
+  OTHER
+  UNKNOWN
 }
 
 """
@@ -329,18 +509,18 @@ Long can represent values between -(2^63) and 2^63 - 1.
 scalar Long
 
 type Mutation {
-  createUser(data: UserCreateInput!): User!
   createEvent(data: EventCreateInput!): Event!
-  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  createUser(data: UserCreateInput!): User!
   updateEvent(data: EventUpdateInput!, where: EventWhereUniqueInput!): Event
-  deleteUser(where: UserWhereUniqueInput!): User
+  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   deleteEvent(where: EventWhereUniqueInput!): Event
-  upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  deleteUser(where: UserWhereUniqueInput!): User
   upsertEvent(where: EventWhereUniqueInput!, create: EventCreateInput!, update: EventUpdateInput!): Event!
-  updateManyUsers(data: UserUpdateInput!, where: UserWhereInput): BatchPayload!
+  upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   updateManyEvents(data: EventUpdateInput!, where: EventWhereInput): BatchPayload!
-  deleteManyUsers(where: UserWhereInput): BatchPayload!
+  updateManyUsers(data: UserUpdateInput!, where: UserWhereInput): BatchPayload!
   deleteManyEvents(where: EventWhereInput): BatchPayload!
+  deleteManyUsers(where: UserWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -371,12 +551,12 @@ type PageInfo {
 }
 
 type Query {
-  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   events(where: EventWhereInput, orderBy: EventOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Event]!
-  user(where: UserWhereUniqueInput!): User
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   event(where: EventWhereUniqueInput!): Event
-  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  user(where: UserWhereUniqueInput!): User
   eventsConnection(where: EventWhereInput, orderBy: EventOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): EventConnection!
+  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
 
   """Fetches an object given its ID"""
   node(
@@ -386,14 +566,15 @@ type Query {
 }
 
 type Subscription {
-  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
   event(where: EventSubscriptionWhereInput): EventSubscriptionPayload
+  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 
 type User implements Node {
   id: ID!
   name: String!
   email: String
+  gender: Gender!
   events(where: EventWhereInput, orderBy: EventOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Event!]
 }
 
@@ -410,7 +591,19 @@ type UserConnection {
 input UserCreateInput {
   name: String!
   email: String
-  events: EventCreateManyInput
+  gender: Gender!
+  events: EventCreateManyWithoutAttendeesInput
+}
+
+input UserCreateManyWithoutEventsInput {
+  create: [UserCreateWithoutEventsInput!]
+  connect: [UserWhereUniqueInput!]
+}
+
+input UserCreateWithoutEventsInput {
+  name: String!
+  email: String
+  gender: Gender!
 }
 
 """An edge in a connection."""
@@ -429,6 +622,8 @@ enum UserOrderByInput {
   name_DESC
   email_ASC
   email_DESC
+  gender_ASC
+  gender_DESC
   updatedAt_ASC
   updatedAt_DESC
   createdAt_ASC
@@ -439,6 +634,7 @@ type UserPreviousValues {
   id: ID!
   name: String!
   email: String
+  gender: Gender!
 }
 
 type UserSubscriptionPayload {
@@ -483,7 +679,34 @@ input UserSubscriptionWhereInput {
 input UserUpdateInput {
   name: String
   email: String
-  events: EventUpdateManyInput
+  gender: Gender
+  events: EventUpdateManyWithoutAttendeesInput
+}
+
+input UserUpdateManyWithoutEventsInput {
+  create: [UserCreateWithoutEventsInput!]
+  connect: [UserWhereUniqueInput!]
+  disconnect: [UserWhereUniqueInput!]
+  delete: [UserWhereUniqueInput!]
+  update: [UserUpdateWithWhereUniqueWithoutEventsInput!]
+  upsert: [UserUpsertWithWhereUniqueWithoutEventsInput!]
+}
+
+input UserUpdateWithoutEventsDataInput {
+  name: String
+  email: String
+  gender: Gender
+}
+
+input UserUpdateWithWhereUniqueWithoutEventsInput {
+  where: UserWhereUniqueInput!
+  data: UserUpdateWithoutEventsDataInput!
+}
+
+input UserUpsertWithWhereUniqueWithoutEventsInput {
+  where: UserWhereUniqueInput!
+  update: UserUpdateWithoutEventsDataInput!
+  create: UserCreateWithoutEventsInput!
 }
 
 input UserWhereInput {
@@ -615,6 +838,16 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   email_not_ends_with: String
+  gender: Gender
+
+  """All values that are not equal to given value."""
+  gender_not: Gender
+
+  """All values that are contained in given list."""
+  gender_in: [Gender!]
+
+  """All values that are not contained in given list."""
+  gender_not_in: [Gender!]
   events_every: EventWhereInput
   events_some: EventWhereInput
   events_none: EventWhereInput

@@ -69,7 +69,7 @@ Prisma serves as another database layer on top of our DB that allows us to use o
 - Providing a graphical playground for our GraphQL API.
 
 Once you have Docker set up and running, navigate to the directory with the `prisma.yml` file and type `prisma deploy`, which starts your Prisma server.
-You can open up the playground by typing `prisma playground` in the same directory. Click on the "Schema" tab to the right to see all of the self-generated functionality that Prisma creates just by reading our `.graphql` files!
+You can open up the playground by typing `prisma playground` in the same directory. Click on the "Schema" tab to the right to see all of the self-generated functionality that Prisma creates just by reading our `.graphql` files! Although Prisma generates all of this stuff for us, we don't want to expose it to the client, and also need to add some custom business logic on top of it. Our server will sit on **top** of Prisma and act as the API that the client consumes.
 
 ## Debugging
 

@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "db-access": "./devscripts/db-access.sh",
     "debug": "NODE_ENV=development nodemon --inspect src/app.js",
     "start": "NODE_ENV=development nodemon src/app.js",
     "lint": "eslint src/app.js --fix",

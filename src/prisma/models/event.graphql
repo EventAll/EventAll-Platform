@@ -1,0 +1,13 @@
+type Event {
+  id: ID! @unique
+  attendees: [User!]! @relation(name: "EventAttendees", onDelete: CASCADE)
+  name: String!
+  location: String!
+  description: String! @default(value: "")
+  startDateUtc: DateTime!
+  endDateUtc: DateTime!
+  isAllDay: Boolean!
+  isRecurring: Boolean!
+  duration: Int!
+  recurrencePattern: String
+}
