@@ -1,0 +1,7 @@
+mutation {
+  createAccount(
+    data: { name: "Jerry", email: "jerrytsu@usc.edu", gender: MALE }
+  ) {
+    id
+  }
+}
