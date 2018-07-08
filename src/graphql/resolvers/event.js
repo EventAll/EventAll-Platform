@@ -3,8 +3,10 @@ const logger = require('../../helpers/logger');
 module.exports = {
   Query: {
     events: (_, args, context, info) => {
-      return context.prisma.query.events(
-        {
+      let query = null;
+      const { searchString } = args;
+      if (searchString) {
+        query = {
           where: {
             OR: [
               { name_contains: args.searchString },
@@ -12,9 +14,9 @@ module.exports = {
               { description_contains: args.searchString },
             ],
           },
-        },
-        info
-      );
+        };
+      }
+      return context.prisma.query.events(query, info);
     },
   },
   Mutation: {

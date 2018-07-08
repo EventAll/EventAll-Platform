@@ -1,6 +1,21 @@
 mutation {
-  createAccount(
-    data: { name: "Jerry", email: "jerrytsu@usc.edu", gender: MALE }
+  account: createUser(
+    data: { name: "Jerry Tsui", email: "jerrytsu@usc.edu", gender: MALE }
+  ) {
+    id
+  }
+
+  event: createEvent(
+    data: {
+      name: "Festival of Books"
+      description: "LA Times Festival of Books"
+      location: "Los Angeles, CA"
+      startDateUtc: "2018-07-07T15:46:40+00:00"
+      endDateUtc: "2018-08-07T15:46:40+00:01"
+      isRecurring: false
+      isAllDay: false
+      duration: 3
+    }
   ) {
     id
   }
