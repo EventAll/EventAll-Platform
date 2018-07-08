@@ -20,6 +20,7 @@ const options = {
   port: 4000,
   // Only enable graphql playground in development mode
   playground: ENV === 'development' ? '/playground' : false,
+  debug: ENV === 'development',
 };
 
 server.express.use(require('./routes/healthcheck'));

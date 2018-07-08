@@ -3,6 +3,8 @@ datamodel:
   - models/event.graphql
   - models/user.graphql
   - enums/gender.graphql
+seed:
+  import: seed.graphql
 hooks:
   post-deploy:
     - graphql get-schema -p prisma

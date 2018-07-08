@@ -1,11 +1,24 @@
-# import Post from './generated/prisma.graphql'
+# import Event from './generated/prisma.graphql'
 # import User from './generated/prisma.graphql'
 
 type Query {
   events(searchString: String): [Event!]!
   user(id: ID!): User
+  users(searchString: String): [User!]!
 }
 
 type Mutation {
-  signUp(name: String!): User!
+  createAccount(name: String!, email: String, gender: Gender!): User!
+  createEvent(
+    name: String!
+    location: String!
+    description: String
+    isAllDay: Boolean!
+    isRecurring: Boolean!
+    duration: Int!
+    recurrencePattern: String
+    startDateUtc: DateTime!
+    endDateUtc: DateTime!
+  ): Event!
+  signUpForEvent(id: ID!, eventId: ID!): Event!
 }
