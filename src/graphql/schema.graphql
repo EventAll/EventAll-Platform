@@ -20,5 +20,5 @@ type Mutation {
     startDateUtc: DateTime!
     endDateUtc: DateTime!
   ): Event!
-  signUpForEvent(id: ID!, eventId: ID!): Event!
+  signUpForEvent(userId: ID!, eventId: ID!): Event!
 }

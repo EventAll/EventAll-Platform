@@ -15,17 +15,34 @@ module.exports = {
         info
       );
     },
-    signUpForEvent: (_, args, context, info) => {
-      const { id, eventId } = args;
-      const user = context.prisma.query.user(
+    signUpForEvent: async (_, args, context, info) => {
+      const { userId, eventId } = args;
+      await context.prisma.mutation.updateUser(
         {
           where: {
-            id,
+            id: userId,
+          },
+          data: {
+            events: {
+              connect: [{ id: eventId }],
+            },
           },
         },
         info
       );
-      logger.info(user);
+      return await context.prisma.mutation.updateEvent(
+        {
+          where: {
+            id: eventId,
+          },
+          data: {
+            attendees: {
+              connect: [{ id: userId }],
+            },
+          },
+        },
+        info
+      );
     },
   },
   Query: {
@@ -41,7 +58,19 @@ module.exports = {
     },
     // NOTE: DELETE THIS FOR PRODUCTION
     users: (_, args, context, info) => {
-      return context.prisma.query.users();
+      let query = null;
+      const { searchString } = args;
+      if (searchString) {
+        query = {
+          where: {
+            OR: [
+              { name_contains: searchString },
+              { email_contains: searchString },
+            ],
+          },
+        };
+      }
+      return context.prisma.query.users(query, info);
     },
   },
 };
