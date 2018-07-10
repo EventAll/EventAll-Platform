@@ -1,5 +1,9 @@
 # source: http://localhost:4466
-# timestamp: Mon Jul 09 2018 19:22:53 GMT-0700 (Pacific Daylight Time)
+# timestamp: Mon Jul 09 2018 22:46:17 GMT-0700 (Pacific Daylight Time)
+
+type AggregateAuthPayload {
+  count: Int!
+}
 
 type AggregateEvent {
   count: Int!
@@ -7,6 +11,146 @@ type AggregateEvent {
 
 type AggregateUser {
   count: Int!
+}
+
+type AuthPayload {
+  token: String!
+  user(where: UserWhereInput): User!
+}
+
+"""A connection to a list of items."""
+type AuthPayloadConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [AuthPayloadEdge]!
+  aggregate: AggregateAuthPayload!
+}
+
+input AuthPayloadCreateInput {
+  token: String!
+  user: UserCreateOneInput!
+}
+
+"""An edge in a connection."""
+type AuthPayloadEdge {
+  """The item at the end of the edge."""
+  node: AuthPayload!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum AuthPayloadOrderByInput {
+  token_ASC
+  token_DESC
+  id_ASC
+  id_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type AuthPayloadPreviousValues {
+  token: String!
+}
+
+type AuthPayloadSubscriptionPayload {
+  mutation: MutationType!
+  node: AuthPayload
+  updatedFields: [String!]
+  previousValues: AuthPayloadPreviousValues
+}
+
+input AuthPayloadSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [AuthPayloadSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [AuthPayloadSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [AuthPayloadSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: AuthPayloadWhereInput
+}
+
+input AuthPayloadUpdateInput {
+  token: String
+  user: UserUpdateOneInput
+}
+
+input AuthPayloadWhereInput {
+  """Logical AND on all given filters."""
+  AND: [AuthPayloadWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [AuthPayloadWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [AuthPayloadWhereInput!]
+  token: String
+
+  """All values that are not equal to given value."""
+  token_not: String
+
+  """All values that are contained in given list."""
+  token_in: [String!]
+
+  """All values that are not contained in given list."""
+  token_not_in: [String!]
+
+  """All values less than the given value."""
+  token_lt: String
+
+  """All values less than or equal the given value."""
+  token_lte: String
+
+  """All values greater than the given value."""
+  token_gt: String
+
+  """All values greater than or equal the given value."""
+  token_gte: String
+
+  """All values containing the given string."""
+  token_contains: String
+
+  """All values not containing the given string."""
+  token_not_contains: String
+
+  """All values starting with the given string."""
+  token_starts_with: String
+
+  """All values not starting with the given string."""
+  token_not_starts_with: String
+
+  """All values ending with the given string."""
+  token_ends_with: String
+
+  """All values not ending with the given string."""
+  token_not_ends_with: String
+  user: UserWhereInput
 }
 
 type BatchPayload {
@@ -510,6 +654,7 @@ scalar Long
 
 type Mutation {
   createEvent(data: EventCreateInput!): Event!
+  createAuthPayload(data: AuthPayloadCreateInput!): AuthPayload!
   createUser(data: UserCreateInput!): User!
   updateEvent(data: EventUpdateInput!, where: EventWhereUniqueInput!): Event
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
@@ -518,8 +663,10 @@ type Mutation {
   upsertEvent(where: EventWhereUniqueInput!, create: EventCreateInput!, update: EventUpdateInput!): Event!
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   updateManyEvents(data: EventUpdateInput!, where: EventWhereInput): BatchPayload!
+  updateManyAuthPayloads(data: AuthPayloadUpdateInput!, where: AuthPayloadWhereInput): BatchPayload!
   updateManyUsers(data: UserUpdateInput!, where: UserWhereInput): BatchPayload!
   deleteManyEvents(where: EventWhereInput): BatchPayload!
+  deleteManyAuthPayloads(where: AuthPayloadWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
 }
 
@@ -552,10 +699,12 @@ type PageInfo {
 
 type Query {
   events(where: EventWhereInput, orderBy: EventOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Event]!
+  authPayloads(where: AuthPayloadWhereInput, orderBy: AuthPayloadOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [AuthPayload]!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   event(where: EventWhereUniqueInput!): Event
   user(where: UserWhereUniqueInput!): User
   eventsConnection(where: EventWhereInput, orderBy: EventOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): EventConnection!
+  authPayloadsConnection(where: AuthPayloadWhereInput, orderBy: AuthPayloadOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AuthPayloadConnection!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
 
   """Fetches an object given its ID"""
@@ -567,6 +716,7 @@ type Query {
 
 type Subscription {
   event(where: EventSubscriptionWhereInput): EventSubscriptionPayload
+  authPayload(where: AuthPayloadSubscriptionWhereInput): AuthPayloadSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 
@@ -602,6 +752,11 @@ input UserCreateInput {
 input UserCreateManyWithoutEventsInput {
   create: [UserCreateWithoutEventsInput!]
   connect: [UserWhereUniqueInput!]
+}
+
+input UserCreateOneInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
 }
 
 input UserCreateWithoutEventsInput {
@@ -688,6 +843,15 @@ input UserSubscriptionWhereInput {
   node: UserWhereInput
 }
 
+input UserUpdateDataInput {
+  facebookId: String
+  name: String
+  password: String
+  email: String
+  gender: Gender
+  events: EventUpdateManyWithoutAttendeesInput
+}
+
 input UserUpdateInput {
   facebookId: String
   name: String
@@ -706,6 +870,14 @@ input UserUpdateManyWithoutEventsInput {
   upsert: [UserUpsertWithWhereUniqueWithoutEventsInput!]
 }
 
+input UserUpdateOneInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
+  delete: Boolean
+  update: UserUpdateDataInput
+  upsert: UserUpsertNestedInput
+}
+
 input UserUpdateWithoutEventsDataInput {
   facebookId: String
   name: String
@@ -717,6 +889,11 @@ input UserUpdateWithoutEventsDataInput {
 input UserUpdateWithWhereUniqueWithoutEventsInput {
   where: UserWhereUniqueInput!
   data: UserUpdateWithoutEventsDataInput!
+}
+
+input UserUpsertNestedInput {
+  update: UserUpdateDataInput!
+  create: UserCreateInput!
 }
 
 input UserUpsertWithWhereUniqueWithoutEventsInput {
@@ -947,6 +1124,9 @@ input UserWhereInput {
   events_every: EventWhereInput
   events_some: EventWhereInput
   events_none: EventWhereInput
+  _MagicalBackRelation_AuthPayloadToUser_every: AuthPayloadWhereInput
+  _MagicalBackRelation_AuthPayloadToUser_some: AuthPayloadWhereInput
+  _MagicalBackRelation_AuthPayloadToUser_none: AuthPayloadWhereInput
 }
 
 input UserWhereUniqueInput {

@@ -1,4 +1,4 @@
-const userId = (context) => {
+const getUserId = (context) => {
   const Authorization = context.request.get('Authorization');
   if (Authorization) {
     const token = Authorization.replace('Bearer ', '');
@@ -7,4 +7,8 @@ const userId = (context) => {
   }
 
   throw new Error('User is not authorized');
+};
+
+module.exports = {
+  getUserId,
 };

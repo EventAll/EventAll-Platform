@@ -19,7 +19,10 @@ module.exports = {
           },
         });
 
-        return user;
+        return {
+          token: jwt.sign({ userId: user.id }, process.env.APP_SECRET),
+          user,
+        };
       }
       user = {
         name: args.name,

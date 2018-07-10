@@ -1,5 +1,6 @@
 # import Event from './generated/prisma.graphql'
 # import User from './generated/prisma.graphql'
+# import AuthPayload from './generated/prisma.graphql'
 
 type Query {
   events(searchString: String): [Event!]!
@@ -13,7 +14,7 @@ type Mutation {
     password: String!
     email: String
     gender: Gender!
-  ): User!
+  ): AuthPayload!
   createEvent(
     name: String!
     location: String!
