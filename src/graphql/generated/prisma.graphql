@@ -1,5 +1,5 @@
 # source: http://localhost:4466
-# timestamp: Tue Jul 03 2018 08:30:17 GMT-0700 (Pacific Daylight Time)
+# timestamp: Mon Jul 09 2018 19:22:53 GMT-0700 (Pacific Daylight Time)
 
 type AggregateEvent {
   count: Int!
@@ -572,7 +572,9 @@ type Subscription {
 
 type User implements Node {
   id: ID!
+  facebookId: String!
   name: String!
+  password: String!
   email: String
   gender: Gender!
   events(where: EventWhereInput, orderBy: EventOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Event!]
@@ -589,7 +591,9 @@ type UserConnection {
 }
 
 input UserCreateInput {
+  facebookId: String!
   name: String!
+  password: String!
   email: String
   gender: Gender!
   events: EventCreateManyWithoutAttendeesInput
@@ -601,7 +605,9 @@ input UserCreateManyWithoutEventsInput {
 }
 
 input UserCreateWithoutEventsInput {
+  facebookId: String!
   name: String!
+  password: String!
   email: String
   gender: Gender!
 }
@@ -618,8 +624,12 @@ type UserEdge {
 enum UserOrderByInput {
   id_ASC
   id_DESC
+  facebookId_ASC
+  facebookId_DESC
   name_ASC
   name_DESC
+  password_ASC
+  password_DESC
   email_ASC
   email_DESC
   gender_ASC
@@ -632,7 +642,9 @@ enum UserOrderByInput {
 
 type UserPreviousValues {
   id: ID!
+  facebookId: String!
   name: String!
+  password: String!
   email: String
   gender: Gender!
 }
@@ -677,7 +689,9 @@ input UserSubscriptionWhereInput {
 }
 
 input UserUpdateInput {
+  facebookId: String
   name: String
+  password: String
   email: String
   gender: Gender
   events: EventUpdateManyWithoutAttendeesInput
@@ -693,7 +707,9 @@ input UserUpdateManyWithoutEventsInput {
 }
 
 input UserUpdateWithoutEventsDataInput {
+  facebookId: String
   name: String
+  password: String
   email: String
   gender: Gender
 }
@@ -758,6 +774,46 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   id_not_ends_with: ID
+  facebookId: String
+
+  """All values that are not equal to given value."""
+  facebookId_not: String
+
+  """All values that are contained in given list."""
+  facebookId_in: [String!]
+
+  """All values that are not contained in given list."""
+  facebookId_not_in: [String!]
+
+  """All values less than the given value."""
+  facebookId_lt: String
+
+  """All values less than or equal the given value."""
+  facebookId_lte: String
+
+  """All values greater than the given value."""
+  facebookId_gt: String
+
+  """All values greater than or equal the given value."""
+  facebookId_gte: String
+
+  """All values containing the given string."""
+  facebookId_contains: String
+
+  """All values not containing the given string."""
+  facebookId_not_contains: String
+
+  """All values starting with the given string."""
+  facebookId_starts_with: String
+
+  """All values not starting with the given string."""
+  facebookId_not_starts_with: String
+
+  """All values ending with the given string."""
+  facebookId_ends_with: String
+
+  """All values not ending with the given string."""
+  facebookId_not_ends_with: String
   name: String
 
   """All values that are not equal to given value."""
@@ -798,6 +854,46 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   name_not_ends_with: String
+  password: String
+
+  """All values that are not equal to given value."""
+  password_not: String
+
+  """All values that are contained in given list."""
+  password_in: [String!]
+
+  """All values that are not contained in given list."""
+  password_not_in: [String!]
+
+  """All values less than the given value."""
+  password_lt: String
+
+  """All values less than or equal the given value."""
+  password_lte: String
+
+  """All values greater than the given value."""
+  password_gt: String
+
+  """All values greater than or equal the given value."""
+  password_gte: String
+
+  """All values containing the given string."""
+  password_contains: String
+
+  """All values not containing the given string."""
+  password_not_contains: String
+
+  """All values starting with the given string."""
+  password_starts_with: String
+
+  """All values not starting with the given string."""
+  password_not_starts_with: String
+
+  """All values ending with the given string."""
+  password_ends_with: String
+
+  """All values not ending with the given string."""
+  password_not_ends_with: String
   email: String
 
   """All values that are not equal to given value."""

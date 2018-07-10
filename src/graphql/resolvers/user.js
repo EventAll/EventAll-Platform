@@ -7,6 +7,8 @@ module.exports = {
         name: args.name,
         email: args.email,
         gender: args.gender,
+        // TODO: change this facebookID later
+        facebookId: Math.random().toString(),
       };
       return context.prisma.mutation.createUser(
         {

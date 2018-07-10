@@ -1,6 +1,12 @@
 mutation {
   account: createUser(
-    data: { name: "Jerry Tsui", email: "jerrytsu@usc.edu", gender: MALE }
+    data: {
+      name: "Jerry Tsui"
+      email: "jerrytsu@usc.edu"
+      gender: MALE
+      facebookId: "1234567890"
+      password: "password"
+    }
   ) {
     id
   }

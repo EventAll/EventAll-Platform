@@ -8,14 +8,17 @@
     "start": "NODE_ENV=development nodemon src/app.js",
     "lint": "eslint src/app.js --fix",
     "prisma-deploy": "prisma deploy",
-    "prisma-playground": "prisma playground"
+    "prisma-playground": "prisma playground",
+    "prisma-reset": "./devscripts/prisma-reset.sh"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "~1.18.2",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "graphql": "^0.13.2",
     "graphql-yoga": "^1.14.10",
+    "jsonwebtoken": "^8.3.0",
     "morgan": "~1.9.0",
     "prisma-binding": "^2.1.0",
     "winston": "^3.0.0"
