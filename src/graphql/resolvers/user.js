@@ -1,13 +1,32 @@
 const logger = require('../../helpers/logger');
+const { SALT_ROUNDS } = require('../../helpers/constants');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 module.exports = {
   Mutation: {
-    createAccount: (_, args, context, info) => {
-      const user = {
+    createAccount: async (_, args, context, info) => {
+      let user;
+      if (!args.facebookId) {
+        const password = await bcrypt.hash(args.password, SALT_ROUNDS);
+        user = await context.prisma.mutation.createUser({
+          data: {
+            name: args.name,
+            email: args.email,
+            gender: args.gender,
+            password,
+            facebookId: '',
+          },
+        });
+
+        return user;
+      }
+      user = {
         name: args.name,
         email: args.email,
         gender: args.gender,
-        // TODO: change this facebookID later
+        // TODO: implement FB auth later
+        password: '????',
         facebookId: Math.random().toString(),
       };
       return context.prisma.mutation.createUser(
@@ -19,6 +38,19 @@ module.exports = {
     },
     signUpForEvent: async (_, args, context, info) => {
       const { userId, eventId } = args;
+      const userExists = await context.prisma.exists.User({ id: userId });
+      if (!userExists) {
+        const errorMsg = `User does not exist with id ${userId}`;
+        logger.error(errorMsg);
+        throw new Error(errorMsg);
+      }
+      const eventExists = await context.prisma.exists.Event({ id: eventId });
+      if (!eventExists) {
+        const errorMsg = `Event does not exist with id ${eventId}`;
+        logger.error(errorMsg);
+        throw new Error(errorMsg);
+      }
+
       await context.prisma.mutation.updateUser(
         {
           where: {
@@ -48,8 +80,8 @@ module.exports = {
     },
   },
   Query: {
-    user: (_, args, context, info) => {
-      return context.prisma.query.user(
+    user: async (_, args, context, info) => {
+      const user = await context.prisma.query.user(
         {
           where: {
             id: args.id,
@@ -57,6 +89,7 @@ module.exports = {
         },
         info
       );
+      return user;
     },
     // NOTE: DELETE THIS FOR PRODUCTION
     users: (_, args, context, info) => {

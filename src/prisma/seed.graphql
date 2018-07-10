@@ -1,8 +1,8 @@
 mutation {
   account: createUser(
     data: {
-      name: "Jerry Tsui"
-      email: "jerrytsu@usc.edu"
+      name: "Aaron Cote"
+      email: "acote@usc.edu"
       gender: MALE
       facebookId: "1234567890"
       password: "password"

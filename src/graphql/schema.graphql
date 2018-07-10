@@ -8,7 +8,12 @@ type Query {
 }
 
 type Mutation {
-  createAccount(name: String!, email: String, gender: Gender!): User!
+  createAccount(
+    name: String!
+    password: String!
+    email: String
+    gender: Gender!
+  ): User!
   createEvent(
     name: String!
     location: String!

@@ -1,5 +1,6 @@
 const { GraphQLServer } = require('graphql-yoga');
 const { Prisma } = require('prisma-binding');
+require('dotenv').config();
 const logger = require('./helpers/logger');
 
 const ENV = process.env.NODE_ENV || 'development';
@@ -11,7 +12,9 @@ const server = new GraphQLServer({
     ...req,
     prisma: new Prisma({
       typeDefs: 'src/graphql/generated/prisma.graphql',
-      endpoint: 'http://localhost:4466',
+      endpoint: process.env.PRISMA_ENDPOINT,
+      secret: process.env.PRISMA_SECRET,
+      debug: ENV === 'development',
     }),
   }),
 });
