@@ -55,7 +55,7 @@ module.exports = {
       if (!email || !password) {
         throw new Error('Email and password must be specified');
       }
-      const user = await context.prisma.query.user({ where: { email } });
+      const user = await context.prisma.query.user({ where: { email } }, info);
       if (!user) {
         throw new AuthError('User does not exist');
       }
