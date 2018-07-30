@@ -5,6 +5,7 @@
 - [Getting Started](#getting-started)
 - [Editor](#editor)
 - [Development](#development)
+- [Deployment](#deployment)
 - [Debugging](#debugging)
 - [Testing](#testing)
 - [Overview of Commands](#overview-of-commands)
@@ -70,6 +71,15 @@ Prisma serves as another database layer on top of our DB that allows us to use o
 
 Once you have Docker set up and running, navigate to the directory with the `prisma.yml` file and type `prisma deploy`, which starts your Prisma server.
 You can open up the playground by typing `prisma playground` in the same directory. Click on the "Schema" tab to the right to see all of the self-generated functionality that Prisma creates just by reading our `.graphql` files! Although Prisma generates all of this stuff for us, we don't want to expose it to the client, and also need to add some custom business logic on top of it. Our server will sit on **top** of Prisma and act as the API that the client consumes.
+
+## Deployment
+
+Our servers will be deployed onto AWS. In order to SSH into the AWS EC2 instance, you will need to download the `Eventall-Key.pem` inb the Google Drive and put it in your `~/.ssh/` folder. Then, you will need to type the following: `chmod 400 ~/.ssh/Eventall-Key.pem`.
+Then, in your terminal, type the following and provide the credentials when prompted.
+
+```
+ssh -i ~/.ssh/Eventall-Key.pem ec2-user@ec2-34-227-178-75.compute-1.amazonaws.com
+```
 
 ## Debugging
 
