@@ -1,9 +1,9 @@
 type User {
   id: ID! @unique
-  facebookId: String!
-  name: String!
+  facebookId: String
+  name: String
   password: String!
-  email: String
-  gender: Gender!
+  email: String! @unique
+  gender: Gender
   events: [Event!]! @relation(name: "EventAttendees", onDelete: SET_NULL)
 }

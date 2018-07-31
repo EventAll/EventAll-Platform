@@ -2,19 +2,23 @@
 # import User from './generated/prisma.graphql'
 # import AuthPayload from './generated/prisma.graphql'
 
+directive @isAuthenticated on QUERY | FIELD | MUTATION
+
 type Query {
   events(searchString: String): [Event!]!
-  user(id: ID!): User
+  user: User! @isAuthenticated
   users(searchString: String): [User!]!
 }
 
 type Mutation {
   createAccount(
-    name: String!
+    name: String
     password: String!
-    email: String
-    gender: Gender!
+    email: String!
+    gender: Gender
+    facebookId: String
   ): AuthPayload!
+  login(email: String!, password: String!): AuthPayload!
   createEvent(
     name: String!
     location: String!
@@ -26,5 +30,5 @@ type Mutation {
     startDateUtc: DateTime!
     endDateUtc: DateTime!
   ): Event!
-  signUpForEvent(userId: ID!, eventId: ID!): Event!
+  signUpForEvent(eventId: ID!): Event! @isAuthenticated
 }

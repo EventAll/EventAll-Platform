@@ -1,5 +1,5 @@
 # source: http://localhost:4466
-# timestamp: Mon Jul 09 2018 22:46:17 GMT-0700 (Pacific Daylight Time)
+# timestamp: Sun Jul 29 2018 10:38:35 GMT-0700 (Pacific Daylight Time)
 
 type AggregateAuthPayload {
   count: Int!
@@ -722,11 +722,11 @@ type Subscription {
 
 type User implements Node {
   id: ID!
-  facebookId: String!
-  name: String!
+  facebookId: String
+  name: String
   password: String!
-  email: String
-  gender: Gender!
+  email: String!
+  gender: Gender
   events(where: EventWhereInput, orderBy: EventOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Event!]
 }
 
@@ -741,11 +741,11 @@ type UserConnection {
 }
 
 input UserCreateInput {
-  facebookId: String!
-  name: String!
+  facebookId: String
+  name: String
   password: String!
-  email: String
-  gender: Gender!
+  email: String!
+  gender: Gender
   events: EventCreateManyWithoutAttendeesInput
 }
 
@@ -760,11 +760,11 @@ input UserCreateOneInput {
 }
 
 input UserCreateWithoutEventsInput {
-  facebookId: String!
-  name: String!
+  facebookId: String
+  name: String
   password: String!
-  email: String
-  gender: Gender!
+  email: String!
+  gender: Gender
 }
 
 """An edge in a connection."""
@@ -797,11 +797,11 @@ enum UserOrderByInput {
 
 type UserPreviousValues {
   id: ID!
-  facebookId: String!
-  name: String!
+  facebookId: String
+  name: String
   password: String!
-  email: String
-  gender: Gender!
+  email: String!
+  gender: Gender
 }
 
 type UserSubscriptionPayload {
@@ -1131,4 +1131,5 @@ input UserWhereInput {
 
 input UserWhereUniqueInput {
   id: ID
+  email: String
 }

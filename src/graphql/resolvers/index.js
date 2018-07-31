@@ -7,7 +7,11 @@ const resolvers = {
 };
 
 readdirSync(`${__dirname}/`).forEach((file) => {
-  if (file.match(/\.js$/) !== null && file !== 'index.js') {
+  if (
+    file.match(/\.js$/) !== null &&
+    file !== 'index.js' &&
+    file !== 'directiveResolvers.js'
+  ) {
     logger.verbose(`Processing resolver: ${file}`);
     const resolver = require('./' + file);
     const { Query, Mutation } = resolver;
