@@ -55,7 +55,7 @@ module.exports = {
       if (!email || !password) {
         throw new Error('Email and password must be specified');
       }
-      const user = await context.prisma.query.user({ where: { email } }, info);
+      const user = await context.prisma.query.user({ where: { email } });
       if (!user) {
         throw new AuthError('User does not exist');
       }
@@ -69,7 +69,8 @@ module.exports = {
       };
     },
     signUpForEvent: async (_, args, context, info) => {
-      const { userId, eventId } = args;
+      const userId = context.request.userId;
+      const { eventId } = args;
       const userExists = await context.prisma.exists.User({ id: userId });
       if (!userExists) {
         const errorMsg = `User does not exist with id ${userId}`;
@@ -113,14 +114,16 @@ module.exports = {
   },
   Query: {
     user: async (_, args, context, info) => {
+      const id = context.request.userId;
       const user = await context.prisma.query.user(
         {
           where: {
-            id: args.id,
+            id,
           },
         },
         info
       );
+      console.log(user);
       return user;
     },
     // NOTE: DELETE THIS FOR PRODUCTION

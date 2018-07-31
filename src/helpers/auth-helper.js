@@ -1,3 +1,5 @@
+const jwt = require('jsonwebtoken');
+
 const getUserId = (context) => {
   const Authorization = context.request.get('Authorization');
   if (Authorization) {
@@ -5,8 +7,7 @@ const getUserId = (context) => {
     const { userId } = jwt.verify(token, process.env.APP_SECRET);
     return userId;
   }
-
-  throw new Error('User is not authorized');
+  return null;
 };
 
 module.exports = {
