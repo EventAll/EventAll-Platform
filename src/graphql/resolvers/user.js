@@ -14,7 +14,7 @@ module.exports = {
         if (await context.prisma.exists.User({ email: args.email })) {
           throw new AuthError(
             `Cannot create user with email ${
-              args.email
+            args.email
             }, such an email already exists`
           );
         }
@@ -49,6 +49,30 @@ module.exports = {
         },
         info
       );
+    },
+    updateAccount: async (_, args, context, info) => {
+      const id = context.request.userId;
+      if (!id) {
+        const errorMsg = 'userId not sent as part of the request';
+        logger.error(errorMsg);
+        throw new Error(errorMsg);
+      }
+
+      const userExists = await context.prisma.exists.User({ id });
+      if (!userExists) {
+        const errorMsg = `User does not exist with id ${userId}`;
+        logger.error(errorMsg);
+        throw new Error(errorMsg);
+      }
+
+      const user = await context.prisma.mutation.updateUser({
+        where: {
+          id,
+        },
+        data: args,
+      });
+
+      return user;
     },
     login: async (_, args, context, info) => {
       const { email, password } = args;

@@ -6,4 +6,6 @@ type User {
   email: String! @unique
   gender: Gender
   events: [Event!]! @relation(name: "EventAttendees", onDelete: SET_NULL)
+  profilePictureUrl: String
 }
+
