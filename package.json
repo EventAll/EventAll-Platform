@@ -18,7 +18,7 @@
     "debug": "~2.6.9",
     "dotenv": "^6.0.0",
     "graphql": "^0.13.2",
-    "graphql-yoga": "^1.14.10",
+    "graphql-yoga": "^1.16.2",
     "jsonwebtoken": "^8.3.0",
     "morgan": "~1.9.0",
     "prisma-binding": "^2.1.0",
@@ -30,8 +30,8 @@
     "eslint-config-airbnb": "^17.0.0",
     "eslint-config-airbnb-base": "^13.0.0",
     "eslint-plugin-import": "^2.13.0",
-    "graphql-cli": "^2.16.4",
-    "nodemon": "^1.18.3"
+    "graphql-cli": "^2.16.7",
+    "nodemon": "^1.18.4"
   },
   "main": "index.js",
   "author": "peniqliotuv <jerrytsu@usc.edu>",
