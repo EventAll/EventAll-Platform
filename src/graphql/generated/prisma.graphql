@@ -1,5 +1,5 @@
 # source: http://localhost:4466
-# timestamp: Sun Jul 29 2018 10:38:35 GMT-0700 (Pacific Daylight Time)
+# timestamp: Sun Sep 02 2018 18:19:48 GMT-0700 (Pacific Daylight Time)
 
 type AggregateAuthPayload {
   count: Int!
@@ -728,6 +728,7 @@ type User implements Node {
   email: String!
   gender: Gender
   events(where: EventWhereInput, orderBy: EventOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Event!]
+  profilePictureUrl: String
 }
 
 """A connection to a list of items."""
@@ -746,6 +747,7 @@ input UserCreateInput {
   password: String!
   email: String!
   gender: Gender
+  profilePictureUrl: String
   events: EventCreateManyWithoutAttendeesInput
 }
 
@@ -765,6 +767,7 @@ input UserCreateWithoutEventsInput {
   password: String!
   email: String!
   gender: Gender
+  profilePictureUrl: String
 }
 
 """An edge in a connection."""
@@ -789,6 +792,8 @@ enum UserOrderByInput {
   email_DESC
   gender_ASC
   gender_DESC
+  profilePictureUrl_ASC
+  profilePictureUrl_DESC
   updatedAt_ASC
   updatedAt_DESC
   createdAt_ASC
@@ -802,6 +807,7 @@ type UserPreviousValues {
   password: String!
   email: String!
   gender: Gender
+  profilePictureUrl: String
 }
 
 type UserSubscriptionPayload {
@@ -849,6 +855,7 @@ input UserUpdateDataInput {
   password: String
   email: String
   gender: Gender
+  profilePictureUrl: String
   events: EventUpdateManyWithoutAttendeesInput
 }
 
@@ -858,6 +865,7 @@ input UserUpdateInput {
   password: String
   email: String
   gender: Gender
+  profilePictureUrl: String
   events: EventUpdateManyWithoutAttendeesInput
 }
 
@@ -884,6 +892,7 @@ input UserUpdateWithoutEventsDataInput {
   password: String
   email: String
   gender: Gender
+  profilePictureUrl: String
 }
 
 input UserUpdateWithWhereUniqueWithoutEventsInput {
@@ -1121,6 +1130,46 @@ input UserWhereInput {
 
   """All values that are not contained in given list."""
   gender_not_in: [Gender!]
+  profilePictureUrl: String
+
+  """All values that are not equal to given value."""
+  profilePictureUrl_not: String
+
+  """All values that are contained in given list."""
+  profilePictureUrl_in: [String!]
+
+  """All values that are not contained in given list."""
+  profilePictureUrl_not_in: [String!]
+
+  """All values less than the given value."""
+  profilePictureUrl_lt: String
+
+  """All values less than or equal the given value."""
+  profilePictureUrl_lte: String
+
+  """All values greater than the given value."""
+  profilePictureUrl_gt: String
+
+  """All values greater than or equal the given value."""
+  profilePictureUrl_gte: String
+
+  """All values containing the given string."""
+  profilePictureUrl_contains: String
+
+  """All values not containing the given string."""
+  profilePictureUrl_not_contains: String
+
+  """All values starting with the given string."""
+  profilePictureUrl_starts_with: String
+
+  """All values not starting with the given string."""
+  profilePictureUrl_not_starts_with: String
+
+  """All values ending with the given string."""
+  profilePictureUrl_ends_with: String
+
+  """All values not ending with the given string."""
+  profilePictureUrl_not_ends_with: String
   events_every: EventWhereInput
   events_some: EventWhereInput
   events_none: EventWhereInput

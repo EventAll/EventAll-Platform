@@ -18,6 +18,12 @@ type Mutation {
     gender: Gender
     facebookId: String
   ): AuthPayload!
+  updateAccount(
+    name: String
+    password: String
+    email: String
+    profilePictureUrl: String
+  ): User! @isAuthenticated
   login(email: String!, password: String!): AuthPayload!
   createEvent(
     name: String!
