@@ -10,4 +10,5 @@ type Event {
   isRecurring: Boolean!
   duration: Int!
   recurrencePattern: String
+  images: [Image!]!
 }

@@ -1,6 +1,8 @@
 # import Event from './generated/prisma.graphql'
 # import User from './generated/prisma.graphql'
 # import AuthPayload from './generated/prisma.graphql'
+# import UserUpdateInput from './generated/prisma.graphql'
+# import EventCreateInput from './generated/prisma.graphql'
 
 directive @isAuthenticated on QUERY | FIELD | MUTATION
 
@@ -18,23 +20,8 @@ type Mutation {
     gender: Gender
     facebookId: String
   ): AuthPayload!
-  updateAccount(
-    name: String
-    password: String
-    email: String
-    profilePictureUrl: String
-  ): User! @isAuthenticated
+  updateAccount(payload: UserUpdateInput!): User! @isAuthenticated
   login(email: String!, password: String!): AuthPayload!
-  createEvent(
-    name: String!
-    location: String!
-    description: String
-    isAllDay: Boolean!
-    isRecurring: Boolean!
-    duration: Int!
-    recurrencePattern: String
-    startDateUtc: DateTime!
-    endDateUtc: DateTime!
-  ): Event!
+  createEvent(payload: EventCreateInput!): Event!
   signUpForEvent(eventId: ID!): Event! @isAuthenticated
 }

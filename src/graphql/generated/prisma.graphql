@@ -1,11 +1,15 @@
 # source: http://localhost:4466
-# timestamp: Sun Sep 02 2018 18:19:48 GMT-0700 (Pacific Daylight Time)
+# timestamp: Thu Sep 06 2018 16:45:00 GMT-0700 (Pacific Daylight Time)
 
 type AggregateAuthPayload {
   count: Int!
 }
 
 type AggregateEvent {
+  count: Int!
+}
+
+type AggregateImage {
   count: Int!
 }
 
@@ -172,6 +176,7 @@ type Event implements Node {
   isRecurring: Boolean!
   duration: Int!
   recurrencePattern: String
+  images(where: ImageWhereInput, orderBy: ImageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Image!]
 }
 
 """A connection to a list of items."""
@@ -195,6 +200,7 @@ input EventCreateInput {
   duration: Int!
   recurrencePattern: String
   attendees: UserCreateManyWithoutEventsInput
+  images: ImageCreateManyInput
 }
 
 input EventCreateManyWithoutAttendeesInput {
@@ -212,6 +218,7 @@ input EventCreateWithoutAttendeesInput {
   isRecurring: Boolean!
   duration: Int!
   recurrencePattern: String
+  images: ImageCreateManyInput
 }
 
 """An edge in a connection."""
@@ -313,6 +320,7 @@ input EventUpdateInput {
   duration: Int
   recurrencePattern: String
   attendees: UserUpdateManyWithoutEventsInput
+  images: ImageUpdateManyInput
 }
 
 input EventUpdateManyWithoutAttendeesInput {
@@ -334,6 +342,7 @@ input EventUpdateWithoutAttendeesDataInput {
   isRecurring: Boolean
   duration: Int
   recurrencePattern: String
+  images: ImageUpdateManyInput
 }
 
 input EventUpdateWithWhereUniqueWithoutAttendeesInput {
@@ -633,6 +642,9 @@ input EventWhereInput {
   attendees_every: UserWhereInput
   attendees_some: UserWhereInput
   attendees_none: UserWhereInput
+  images_every: ImageWhereInput
+  images_some: ImageWhereInput
+  images_none: ImageWhereInput
 }
 
 input EventWhereUniqueInput {
@@ -646,6 +658,242 @@ enum Gender {
   UNKNOWN
 }
 
+type Image {
+  url: String!
+  title: String
+  description: String
+}
+
+"""A connection to a list of items."""
+type ImageConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [ImageEdge]!
+  aggregate: AggregateImage!
+}
+
+input ImageCreateInput {
+  url: String!
+  title: String
+  description: String
+}
+
+input ImageCreateManyInput {
+  create: [ImageCreateInput!]
+}
+
+"""An edge in a connection."""
+type ImageEdge {
+  """The item at the end of the edge."""
+  node: Image!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum ImageOrderByInput {
+  url_ASC
+  url_DESC
+  title_ASC
+  title_DESC
+  description_ASC
+  description_DESC
+  id_ASC
+  id_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type ImagePreviousValues {
+  url: String!
+  title: String
+  description: String
+}
+
+type ImageSubscriptionPayload {
+  mutation: MutationType!
+  node: Image
+  updatedFields: [String!]
+  previousValues: ImagePreviousValues
+}
+
+input ImageSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ImageSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ImageSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ImageSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: ImageWhereInput
+}
+
+input ImageUpdateInput {
+  url: String
+  title: String
+  description: String
+}
+
+input ImageUpdateManyInput {
+  create: [ImageCreateInput!]
+}
+
+input ImageWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ImageWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ImageWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ImageWhereInput!]
+  url: String
+
+  """All values that are not equal to given value."""
+  url_not: String
+
+  """All values that are contained in given list."""
+  url_in: [String!]
+
+  """All values that are not contained in given list."""
+  url_not_in: [String!]
+
+  """All values less than the given value."""
+  url_lt: String
+
+  """All values less than or equal the given value."""
+  url_lte: String
+
+  """All values greater than the given value."""
+  url_gt: String
+
+  """All values greater than or equal the given value."""
+  url_gte: String
+
+  """All values containing the given string."""
+  url_contains: String
+
+  """All values not containing the given string."""
+  url_not_contains: String
+
+  """All values starting with the given string."""
+  url_starts_with: String
+
+  """All values not starting with the given string."""
+  url_not_starts_with: String
+
+  """All values ending with the given string."""
+  url_ends_with: String
+
+  """All values not ending with the given string."""
+  url_not_ends_with: String
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+  description: String
+
+  """All values that are not equal to given value."""
+  description_not: String
+
+  """All values that are contained in given list."""
+  description_in: [String!]
+
+  """All values that are not contained in given list."""
+  description_not_in: [String!]
+
+  """All values less than the given value."""
+  description_lt: String
+
+  """All values less than or equal the given value."""
+  description_lte: String
+
+  """All values greater than the given value."""
+  description_gt: String
+
+  """All values greater than or equal the given value."""
+  description_gte: String
+
+  """All values containing the given string."""
+  description_contains: String
+
+  """All values not containing the given string."""
+  description_not_contains: String
+
+  """All values starting with the given string."""
+  description_starts_with: String
+
+  """All values not starting with the given string."""
+  description_not_starts_with: String
+
+  """All values ending with the given string."""
+  description_ends_with: String
+
+  """All values not ending with the given string."""
+  description_not_ends_with: String
+}
+
 """
 The `Long` scalar type represents non-fractional signed whole numeric values.
 Long can represent values between -(2^63) and 2^63 - 1.
@@ -655,6 +903,7 @@ scalar Long
 type Mutation {
   createEvent(data: EventCreateInput!): Event!
   createAuthPayload(data: AuthPayloadCreateInput!): AuthPayload!
+  createImage(data: ImageCreateInput!): Image!
   createUser(data: UserCreateInput!): User!
   updateEvent(data: EventUpdateInput!, where: EventWhereUniqueInput!): Event
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
@@ -664,9 +913,11 @@ type Mutation {
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   updateManyEvents(data: EventUpdateInput!, where: EventWhereInput): BatchPayload!
   updateManyAuthPayloads(data: AuthPayloadUpdateInput!, where: AuthPayloadWhereInput): BatchPayload!
+  updateManyImages(data: ImageUpdateInput!, where: ImageWhereInput): BatchPayload!
   updateManyUsers(data: UserUpdateInput!, where: UserWhereInput): BatchPayload!
   deleteManyEvents(where: EventWhereInput): BatchPayload!
   deleteManyAuthPayloads(where: AuthPayloadWhereInput): BatchPayload!
+  deleteManyImages(where: ImageWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
 }
 
@@ -700,11 +951,13 @@ type PageInfo {
 type Query {
   events(where: EventWhereInput, orderBy: EventOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Event]!
   authPayloads(where: AuthPayloadWhereInput, orderBy: AuthPayloadOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [AuthPayload]!
+  images(where: ImageWhereInput, orderBy: ImageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Image]!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   event(where: EventWhereUniqueInput!): Event
   user(where: UserWhereUniqueInput!): User
   eventsConnection(where: EventWhereInput, orderBy: EventOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): EventConnection!
   authPayloadsConnection(where: AuthPayloadWhereInput, orderBy: AuthPayloadOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AuthPayloadConnection!
+  imagesConnection(where: ImageWhereInput, orderBy: ImageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ImageConnection!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
 
   """Fetches an object given its ID"""
@@ -717,6 +970,7 @@ type Query {
 type Subscription {
   event(where: EventSubscriptionWhereInput): EventSubscriptionPayload
   authPayload(where: AuthPayloadSubscriptionWhereInput): AuthPayloadSubscriptionPayload
+  image(where: ImageSubscriptionWhereInput): ImageSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 
@@ -729,6 +983,8 @@ type User implements Node {
   gender: Gender
   events(where: EventWhereInput, orderBy: EventOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Event!]
   profilePictureUrl: String
+  userTier: UserTier
+  birthday: DateTime
 }
 
 """A connection to a list of items."""
@@ -748,6 +1004,8 @@ input UserCreateInput {
   email: String!
   gender: Gender
   profilePictureUrl: String
+  userTier: UserTier
+  birthday: DateTime
   events: EventCreateManyWithoutAttendeesInput
 }
 
@@ -768,6 +1026,8 @@ input UserCreateWithoutEventsInput {
   email: String!
   gender: Gender
   profilePictureUrl: String
+  userTier: UserTier
+  birthday: DateTime
 }
 
 """An edge in a connection."""
@@ -794,6 +1054,10 @@ enum UserOrderByInput {
   gender_DESC
   profilePictureUrl_ASC
   profilePictureUrl_DESC
+  userTier_ASC
+  userTier_DESC
+  birthday_ASC
+  birthday_DESC
   updatedAt_ASC
   updatedAt_DESC
   createdAt_ASC
@@ -808,6 +1072,8 @@ type UserPreviousValues {
   email: String!
   gender: Gender
   profilePictureUrl: String
+  userTier: UserTier
+  birthday: DateTime
 }
 
 type UserSubscriptionPayload {
@@ -849,6 +1115,12 @@ input UserSubscriptionWhereInput {
   node: UserWhereInput
 }
 
+enum UserTier {
+  BASIC
+  GOLD
+  PLATINUM
+}
+
 input UserUpdateDataInput {
   facebookId: String
   name: String
@@ -856,6 +1128,8 @@ input UserUpdateDataInput {
   email: String
   gender: Gender
   profilePictureUrl: String
+  userTier: UserTier
+  birthday: DateTime
   events: EventUpdateManyWithoutAttendeesInput
 }
 
@@ -866,6 +1140,8 @@ input UserUpdateInput {
   email: String
   gender: Gender
   profilePictureUrl: String
+  userTier: UserTier
+  birthday: DateTime
   events: EventUpdateManyWithoutAttendeesInput
 }
 
@@ -893,6 +1169,8 @@ input UserUpdateWithoutEventsDataInput {
   email: String
   gender: Gender
   profilePictureUrl: String
+  userTier: UserTier
+  birthday: DateTime
 }
 
 input UserUpdateWithWhereUniqueWithoutEventsInput {
@@ -1170,12 +1448,41 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   profilePictureUrl_not_ends_with: String
+  userTier: UserTier
+
+  """All values that are not equal to given value."""
+  userTier_not: UserTier
+
+  """All values that are contained in given list."""
+  userTier_in: [UserTier!]
+
+  """All values that are not contained in given list."""
+  userTier_not_in: [UserTier!]
+  birthday: DateTime
+
+  """All values that are not equal to given value."""
+  birthday_not: DateTime
+
+  """All values that are contained in given list."""
+  birthday_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  birthday_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  birthday_lt: DateTime
+
+  """All values less than or equal the given value."""
+  birthday_lte: DateTime
+
+  """All values greater than the given value."""
+  birthday_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  birthday_gte: DateTime
   events_every: EventWhereInput
   events_some: EventWhereInput
   events_none: EventWhereInput
-  _MagicalBackRelation_AuthPayloadToUser_every: AuthPayloadWhereInput
-  _MagicalBackRelation_AuthPayloadToUser_some: AuthPayloadWhereInput
-  _MagicalBackRelation_AuthPayloadToUser_none: AuthPayloadWhereInput
 }
 
 input UserWhereUniqueInput {

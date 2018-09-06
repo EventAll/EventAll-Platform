@@ -7,5 +7,6 @@ type User {
   gender: Gender
   events: [Event!]! @relation(name: "EventAttendees", onDelete: SET_NULL)
   profilePictureUrl: String
+  userTier: UserTier @default(value: "BASIC")
+  birthday: DateTime
 }
-

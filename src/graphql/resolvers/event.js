@@ -30,20 +30,20 @@ module.exports = {
         throw new Error(errorMsg);
       }
 
-      const event = {
-        name: args.name,
-        location: args.location,
-        description: args.description || '',
-        isAllDay: args.isAllDay,
-        isRecurring: args.isRecurring,
-        duration: args.duration,
-        recurrencePattern: args.recurrencePattern,
-        startDateUtc: args.startDateUtc,
-        endDateUtc: args.endDateUtc,
-      };
+      // const event = {
+      //   name: args.name,
+      //   location: args.location,
+      //   description: args.description || '',
+      //   isAllDay: args.isAllDay,
+      //   isRecurring: args.isRecurring,
+      //   duration: args.duration,
+      //   recurrencePattern: args.recurrencePattern,
+      //   startDateUtc: args.startDateUtc,
+      //   endDateUtc: args.endDateUtc,
+      // };
       return context.prisma.mutation.createEvent(
         {
-          data: event,
+          data: args,
         },
         info
       );

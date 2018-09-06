@@ -3,7 +3,9 @@ datamodel:
   - models/event.graphql
   - models/user.graphql
   - models/authpayload.graphql
+  - models/image.graphql
   - enums/gender.graphql
+  - enums/usertier.graphql
 secret: ${env:PRISMA_SECRET}
 seed:
   import: seed.graphql

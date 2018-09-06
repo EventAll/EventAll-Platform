@@ -7,7 +7,7 @@
     "debug": "NODE_ENV=development nodemon --inspect src/app.js",
     "start": "NODE_ENV=development nodemon src/app.js",
     "lint": "eslint src/app.js --fix",
-    "prisma-deploy": "prisma deploy",
+    "prisma-deploy": "rm src/graphql/generated/prisma.graphql && prisma deploy",
     "prisma-playground": "prisma playground",
     "prisma-reset": "./devscripts/prisma-reset.sh"
   },

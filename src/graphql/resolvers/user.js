@@ -65,11 +65,13 @@ module.exports = {
         throw new Error(errorMsg);
       }
 
+      const { payload } = args;
+
       const user = await context.prisma.mutation.updateUser({
         where: {
           id,
         },
-        data: args,
+        data: payload,
       });
 
       return user;
