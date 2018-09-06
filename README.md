@@ -87,13 +87,13 @@ Instead of starting your server with `yarn start`, start it with `yarn debug`, w
 
 This debugger supports live reload! If you make a change, it should automatically attach to the new process.
 
-## Testing
+## Deploying
 
-Our testing framework will [Jest](https://facebook.github.io/jest/docs/en/tutorial-react-native.html), which is a great testing framework published and maintained by Facebook. Front end tests serve to make sure that changes to one part of the app don't affect others. Tests should only be written if they are meaningful, AKA don't test to make sure that a Button appears when you've very clearly programmed a button there. You should be testing for things such as how a component interacts given a different set of props, or how an entire screen reacts to a button press.
-
-Tests should typically be written for components and screens and should be named as <Component-Name>.test.js in the same level as the actual react file itself. See the "Demo" component for an example.
-
-You can run the test suite by typing `yarn test`. Ignore all of the `console.error` messages for now, it's a stupid React bug.
+You will need to ssh into the EventAll server on AWS. Contact Jerry for the SSH keys to do this.
+`cd` into the Eventall-Platform directory and run `git pull`.
+Then, type `yarn` to install your updates and kill the process with `pm2 stop <id>`.
+If you touched the `docker-compose.yml` file, you will need to run `docker-compose down` and then type `docker-compose up -d`.
+Finally, run `yarn prisma-deploy` and start the server with `pm2 start yarn -- start`.
 
 ## Overview of Commands
 
